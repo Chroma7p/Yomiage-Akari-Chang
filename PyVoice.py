@@ -10,9 +10,13 @@ import AI.Talk.Editor.Api as API
 class PyVoice:
     """
     control:API
-    Hosts:ホストプログラムの一覧
-    CurrentHost:現在のホストプログラム
     Version:現在のホストプログラムのバージョン
+    Hosts:ホストプログラムの一覧
+    Voices:保有しているボイスの一覧
+    Presets:プリセット一覧
+
+    CurrentHost:現在のホストプログラム
+    
     CurrentText:現在保持しているテキスト
     
 
@@ -50,7 +54,7 @@ class PyVoice:
                 self.CurrentPresetName=self.control.CurrentVoicePresetName
                 self.Voices=list(self.control.VoiceNames)
                 self.Presets=list(self.control.VoicePresetNames)
-                self.CurrentPreset=json.loads(self.control.GetVoicePreset(self.CurrentPresetName))
+                #self.CurrentPreset=json.loads(self.control.GetVoicePreset(str(self.CurrentPresetName)))
 
 
                 print("- "*20)
@@ -62,6 +66,8 @@ class PyVoice:
                 
                 print(f"Current Preset Name: {self.CurrentPresetName}")
                 print(f"Current Preset:")
+                self.CurrentPreset=json.loads(self.control.GetVoicePreset(str(self.CurrentPresetName)))
+
                 print(json.dumps(self.CurrentPreset,indent=4,ensure_ascii = False))
                 
                 print("- "*20)
@@ -143,5 +149,13 @@ class PyVoice:
 
     def GetPlayTime(self):
         return self.control.GetPlayTime()
+    
+    def SetVoicePreset(self,name):
+        self.control.CurrentVoicePresetName=name
 
-
+    def GetPresetList(self):
+        return self.Presets
+    
+    def SetPreset(self,preset):
+        print(str(preset))
+        self.control.SetVoicePreset(json.dumps(preset))

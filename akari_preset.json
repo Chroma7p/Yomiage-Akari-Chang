@@ -1,0 +1,28 @@
+{
+    "PresetName": "紲星 あかり",
+    "VoiceName": "akari_emo_48",
+    "MergedVoiceContainer": {
+        "BasePitchVoiceName": "",
+        "MergedVoices": []
+    },
+    "Volume": 1,
+    "Speed": 1,
+    "Pitch": 1,
+    "PitchRange": 1,
+    "MiddlePause": 200,
+    "LongPause": 200,
+    "Styles": [
+        {
+            "Name": "J",
+            "Value": 0
+        },
+        {
+            "Name": "A",
+            "Value": 0
+        },
+        {
+            "Name": "S",
+            "Value": 0
+        }
+    ]
+}
