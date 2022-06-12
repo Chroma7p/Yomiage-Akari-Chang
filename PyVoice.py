@@ -144,18 +144,22 @@ class PyVoice:
 
         self.PlayVoice()
 
-    def GetPreset(self):
-        return self.control.getVoicePreset()
+    def GetPreset(self,preset_name):
+        return self.control.GetVoicePreset(preset_name)
 
     def GetPlayTime(self):
         return self.control.GetPlayTime()
     
-    def SetVoicePreset(self,name):
+    def SetPresetName(self,name):
+        new_preset=self.GetPreset(name)
+        print(new_preset)
         self.control.CurrentVoicePresetName=name
 
     def GetPresetList(self):
         return self.Presets
     
-    def SetPreset(self,preset):
-        print(str(preset))
-        self.control.SetVoicePreset(json.dumps(preset))
+    def SetPresetJSON(self,preset):
+        self.control.SetVoicePreset(preset)
+
+    def GetCurrentPresetName(self):
+        return self.control.CurrentVoicePresetName
