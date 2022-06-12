@@ -3,8 +3,7 @@ from apitoken import APITOKEN
 from PyVoice import PyVoice
 
 akari=PyVoice()
-
-bot=commands.Bot(command_prefix='!')
+bot=commands.Bot()
 
 @bot.event
 async def on_ready():
@@ -12,6 +11,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    akari.Talk(message.content)
+    content=f"{message.author.display_name}\n{message.content}"
+    akari.Talk(content)
 
 bot.run(APITOKEN)

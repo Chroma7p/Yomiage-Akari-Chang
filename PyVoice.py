@@ -1,5 +1,6 @@
 import time
 import clr
+import json
 
 clr.AddReference("AI.Talk.Editor.Api")
 import AI.Talk.Editor.Api as API
@@ -29,8 +30,7 @@ class PyVoice:
         self.control=API.TtsControl()
         self.CurrentText=-1
         try:
-            self.Hosts=self.control.GetAvailableHostNames()
-            print(list(self.Hosts))
+            self.Hosts=list(self.control.GetAvailableHostNames())
             if len(self.Hosts)>0:
                 self.CurrentHost=self.Hosts[0]
             else:
@@ -47,15 +47,22 @@ class PyVoice:
             else:
                 print("Connected!")
                 self.Version=self.control.Version
-                self.CurrentPreset=self.control.CurrentVoicePresetName
+                self.CurrentPresetName=self.control.CurrentVoicePresetName
                 self.Voices=list(self.control.VoiceNames)
                 self.Presets=list(self.control.VoicePresetNames)
+                self.CurrentPreset=json.loads(self.control.GetVoicePreset(self.CurrentPresetName))
+
+
                 print("- "*20)
                 print(f"A.I.Voice Version : {self.Version}")
-                print(f"Current Host : {self.CurrentHost}")   
-                print(f"Current Preset : {self.CurrentPreset}")
                 print(f"Voice List : {self.Voices}")  
                 print(f"Voice Preset List : {self.Presets}")
+                print(f"Host List : {self.Hosts}")
+                print(f"Current Host : {self.CurrentHost}")   
+                
+                print(f"Current Preset Name: {self.CurrentPresetName}")
+                print(f"Current Preset:")
+                print(json.dumps(self.CurrentPreset,indent=4,ensure_ascii = False))
                 
                 print("- "*20)
         except Exception as e:
@@ -96,7 +103,7 @@ class PyVoice:
             return
         self.control.Text=string
         self.CurrentText=string
-        print(f"Text:{self.control.Text}")
+        print(f"Text:\n{self.control.Text}")
 
     def PlayVoice(self):
         """
@@ -128,5 +135,13 @@ class PyVoice:
         指定した単語を喋る
         """
         self.SetText(string)
+
         self.PlayVoice()
+
+    def GetPreset(self):
+        return self.control.getVoicePreset()
+
+    def GetPlayTime(self):
+        return self.control.GetPlayTime()
+
 
