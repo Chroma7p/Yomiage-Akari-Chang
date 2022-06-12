@@ -9,17 +9,15 @@ import AI.Talk.Editor.Api as API
 
 class PyVoice:
     """
-    control:API
+    control:APIのインスタンス
     Version:現在のホストプログラムのバージョン
     Hosts:ホストプログラムの一覧
     Voices:保有しているボイスの一覧
     Presets:プリセット一覧
 
     CurrentHost:現在のホストプログラム
-    
     CurrentText:現在保持しているテキスト
-    
-
+    CurrentPresetName:現在登録しているプリセット名
     """
 
     def __init__(self):
@@ -63,7 +61,6 @@ class PyVoice:
                 print(f"Voice Preset List : {self.Presets}")
                 print(f"Host List : {self.Hosts}")
                 print(f"Current Host : {self.CurrentHost}")   
-                
                 print(f"Current Preset Name: {self.CurrentPresetName}")
                 print(f"Current Preset:")
                 self.CurrentPreset=json.loads(self.control.GetVoicePreset(str(self.CurrentPresetName)))

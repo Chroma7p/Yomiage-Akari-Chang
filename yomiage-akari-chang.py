@@ -24,10 +24,8 @@ async def on_message(message):
 
 @bot.command()
 async def change_voice(ctx):
-    print(preset_list,akari.GetCurrentPresetName(),preset_list[0])
     if akari.GetCurrentPresetName()==preset_list[0]:
         akari.SetPresetName(preset_list[1])
-
     else:
         akari.SetPresetName(preset_list[0])
     await ctx.send(f"ボイスを{akari.GetCurrentPresetName()}に変更しました")
