@@ -7,6 +7,15 @@ import AI.Talk.Editor.Api as API
 
 
 class PyVoice:
+    """
+    control:API
+    Hosts:ホストプログラムの一覧
+    CurrentHost:現在のホストプログラム
+    Version:現在のホストプログラムのバージョン
+    CurrentText:現在保持しているテキスト
+    
+
+    """
 
     def __init__(self):
         """
@@ -18,10 +27,10 @@ class PyVoice:
         ホストプログラムへの接続
         """
         self.control=API.TtsControl()
-        self.isEmpty=True
+        self.CurrentText=-1
         try:
             self.Hosts=self.control.GetAvailableHostNames()
-            print(self.Hosts)
+            print(list(self.Hosts))
             if len(self.Hosts)>0:
                 self.CurrentHost=self.Hosts[0]
             else:
@@ -38,12 +47,20 @@ class PyVoice:
             else:
                 print("Connected!")
                 self.Version=self.control.Version
-                print("Ready!")
+                self.CurrentPreset=self.control.CurrentVoicePresetName
+                self.Voices=list(self.control.VoiceNames)
+                self.Presets=list(self.control.VoicePresetNames)
                 print("- "*20)
                 print(f"A.I.Voice Version : {self.Version}")
-                print(f"Current Host : {self.CurrentHost}")     
-        except:
+                print(f"Current Host : {self.CurrentHost}")   
+                print(f"Current Preset : {self.CurrentPreset}")
+                print(f"Voice List : {self.Voices}")  
+                print(f"Voice Preset List : {self.Presets}")
+                
+                print("- "*20)
+        except Exception as e:
             print("error occurred during connection...")
+            print(e)
             self.shutdown()
             exit()
 
@@ -78,7 +95,6 @@ class PyVoice:
             print("SetText use in text mode")
             return
         self.control.Text=string
-        self.isEmpty=False
         self.CurrentText=string
         print(f"Text:{self.control.Text}")
 
@@ -99,7 +115,7 @@ class PyVoice:
         """
         設定中のテキストの音声の保存
         """
-        if self.isEmpty:
+        if self.CurrentText==-1:
             print("set text for voice")
             return 
         if path=="path":
