@@ -1,8 +1,5 @@
 import time
 import clr
-path="""/mnt/c/Program Files/AI/AIVoice/AIVoiceEditor/AI.Talk.Editor.Api.dll"""
-
-#API=ctypes.cdll.LoadLibrary("""./AI.Talk.Editor.Api.dll""")
 
 clr.AddReference("AI.Talk.Editor.Api")
 import AI.Talk.Editor.Api as API
