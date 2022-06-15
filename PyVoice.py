@@ -6,15 +6,81 @@ clr.AddReference("AI.Talk.Editor.Api")
 import AI.Talk.Editor.Api as API
 
 
+class Preset:
+    """
+    AIVoiceのプリセット用クラス
+    --------------------------
+    dict:辞書化
+    toJSON:JSON化
+    """
+
+    def __init__(self,PresetName="紲星 あかり",VoiceName="akari_emo_48",Volume=1,Speed=1,Pitch=1,PitchRange=1,MiddlePause=200,LongPause=200,BasePitchVoiceName="",MergedVoices=[],StyleJ=0,StyleA=0,StyleS=0,JSON=None):
+        """
+        
+        """
+        if JSON!=None:
+            dic=json.loads(JSON)
+
+        self.PresetName=PresetName
+        self.VoiceName=VoiceName
+        self.Volume=Volume
+        self.Spped=Speed
+        self.Pitch=Pitch
+        self.PitchRange=PitchRange
+        self.MiddlePause=MiddlePause
+        self.LongPause=LongPause
+        self.BasePitchVoiceName=BasePitchVoiceName
+        self.MergedVoices=MergedVoices
+        self.StyleJ=StyleJ
+        self.StyleA=StyleA
+        self.StyleS=StyleS
+    
+    def __dict__(self):
+        return {
+            "PresetName":self.PresetName,
+            "VoiceName":self.VoiceName,
+            "Volume":self.Volume,
+            "Speed":self.Spped,
+            "Pitch":self.Pitch,
+            "PitchRange":self.PitchRange,
+            "MiddlePause":self.MiddlePause,
+            "LongPause":self.LongPause,
+            "MergedVoiceContainer":{
+                "BasePitchVoiceName":self.BasePitchVoiceName,
+                "MergedVoices":self.MergedVoices
+            },
+            "Style":[
+                {
+                    "Name":"J",
+                    "Value":self.StyleA
+                },
+                {
+                    "Name":"A",
+                    "Value":0
+                },
+                {
+                    "Name":"S",
+                    "Value":0
+                }
+            ]
+        }
+    
+    def toJSON(self):
+        return json.dump(dict(self))
+
+
+
+
 
 class PyVoice:
     """
+    APIラッパーのクラス
+    ---------------------------
     control:APIのインスタンス
     Version:現在のホストプログラムのバージョン
     Hosts:ホストプログラムの一覧
     Voices:保有しているボイスの一覧
     Presets:プリセット一覧
-
     CurrentHost:現在のホストプログラム
     CurrentText:現在保持しているテキスト
     CurrentPresetName:現在登録しているプリセット名
@@ -52,9 +118,7 @@ class PyVoice:
                 self.CurrentPresetName=self.control.CurrentVoicePresetName
                 self.Voices=list(self.control.VoiceNames)
                 self.Presets=list(self.control.VoicePresetNames)
-                #self.CurrentPreset=json.loads(self.control.GetVoicePreset(str(self.CurrentPresetName)))
-
-
+                self.CurrentPreset=json.loads(self.control.GetVoicePreset(str(self.CurrentPresetName)))
                 print("- "*20)
                 print(f"A.I.Voice Version : {self.Version}")
                 print(f"Voice List : {self.Voices}")  
@@ -63,11 +127,9 @@ class PyVoice:
                 print(f"Current Host : {self.CurrentHost}")   
                 print(f"Current Preset Name: {self.CurrentPresetName}")
                 print(f"Current Preset:")
-                self.CurrentPreset=json.loads(self.control.GetVoicePreset(str(self.CurrentPresetName)))
-
                 print(json.dumps(self.CurrentPreset,indent=4,ensure_ascii = False))
-                
                 print("- "*20)
+                
         except Exception as e:
             print("error occurred during connection...")
             print(e)
@@ -160,3 +222,7 @@ class PyVoice:
 
     def GetCurrentPresetName(self):
         return self.control.CurrentVoicePresetName
+
+    def SetPreset(self,preset:Preset):
+        self.control.SetVoicePreset(preset.toJSON())
+
