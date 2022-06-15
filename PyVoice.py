@@ -66,7 +66,7 @@ class Preset:
         }
     
     def toJSON(self):
-        return json.dump(dict(self))
+        return json.dumps(dict(self))
 
 
 
@@ -204,25 +204,46 @@ class PyVoice:
         self.PlayVoice()
 
     def GetPreset(self,preset_name):
+        """
+        引数nameのプリセットの詳細をJSON形式で取得
+        """
         return self.control.GetVoicePreset(preset_name)
 
     def GetPlayTime(self):
+        """
+        現在登録されているテキストの再生時間を取得
+        """
         return self.control.GetPlayTime()
     
     def SetPresetName(self,name):
+        """
+        プリセットを名前で指定
+        """
         new_preset=self.GetPreset(name)
         print(new_preset)
         self.control.CurrentVoicePresetName=name
 
     def GetPresetList(self):
+        """
+        プリセットのリストを取得
+        """
         return self.Presets
     
     def SetPresetJSON(self,preset):
+        """
+        JSON形式てプリセットを指定
+        """
         self.control.SetVoicePreset(preset)
 
     def GetCurrentPresetName(self):
+        """
+        現在のプリセット名を取得
+        """
         return self.control.CurrentVoicePresetName
 
     def SetPreset(self,preset:Preset):
+        """
+        Preset型をそのままプリセットとして指定
+        """
         self.control.SetVoicePreset(preset.toJSON())
 
